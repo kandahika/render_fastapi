@@ -17,7 +17,7 @@ def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
     @app.get("/omikuji")
-def omikuji():
+    def omikuji():
     omikuji_list = [
         "大吉",
         "中吉",
