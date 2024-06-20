@@ -1,8 +1,7 @@
 from typing import Optional
-
-from fastapi import FastAPI
-
-import random  # randomライブラリを追加
+from fastapi import FastAPI, Form
+from fastapi.responses import HTMLResponse
+import random 
 
 app = FastAPI()
 
@@ -28,5 +27,25 @@ def omikuji():
         "小凶",
         "大凶"
     ]
+    
+    result = random.choice(omikuji_list)  
+    return {"result": result}
 
-    return omikuji_list[random.randrange(10)]
+@app.get("/index", response_class=HTMLResponse)
+def index():
+    html_content = """
+    <html>
+        <head>
+            <title>My Home Page</title>
+        </head>
+        <body>
+            <h1>Welcome to My Home Page!</h1>
+            <p>This is a simple HTML page served by FastAPI.</p>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.post("/present")
+async def give_present(present: str = Form(...)):
+    return {"response": f"Thank you for the {present}! Here is your gift: Candy."}
